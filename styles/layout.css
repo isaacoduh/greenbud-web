@@ -1,0 +1,15 @@
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.header {
+    background-color: #f1f1f1;
+    padding: 20px;
+}
+
+.footer {
+    background-color: #f1f1f1;
+    padding: 20px;
+}
