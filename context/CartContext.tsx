@@ -4,6 +4,8 @@ import { CartItem, Product } from '../types';
 type CartContextType = {
     cart: CartItem[];
     addToCart: (product: Product) => void;
+    removeFromCart: (productId: string) => void;
+    clearCart: () => void;
 };
 
 type CartProps = {
@@ -13,6 +15,8 @@ type CartProps = {
 export const CartContext = createContext<CartContextType>({
     cart: [],
     addToCart: () => { },
+    removeFromCart: () => {},
+    clearCart: () => {},
 });
 
 export const CartProvider: React.FC<CartProps> = ({ children }) => {
@@ -31,6 +35,12 @@ export const CartProvider: React.FC<CartProps> = ({ children }) => {
         }
     };
 
+    const removeFromCart = (productId: string) => {}
+
+    const clearCart = () => {
+        setCart([]);
+    };
+
     // Save the cart to localStorage whenever it changes
     useEffect(() => {
         localStorage.setItem('cart', JSON.stringify(cart));
@@ -45,7 +55,7 @@ export const CartProvider: React.FC<CartProps> = ({ children }) => {
     }, []);
 
     return (
-        <CartContext.Provider value={{ cart, addToCart }}>
+        <CartContext.Provider value={{ cart, addToCart, removeFromCart, clearCart }}>
             {children}
         </CartContext.Provider>
     );

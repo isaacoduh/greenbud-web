@@ -2,23 +2,43 @@ import React, {useContext, useState} from 'react';
 import { CartContext } from '@/context/CartContext';
 import { CartItem } from '@/types';
 import Link from 'next/link';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { useRouter } from 'next/router';
 
 const CheckoutPage: React.FC = () => {
-    const {cart} = useContext(CartContext);
+    const {cart, clearCart} = useContext(CartContext);
+    
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
     const [address, setAddress] = useState('');
     const [phone, setPhone] = useState('');
     const [paymentType, setPaymentType] = useState('');
+    const router = useRouter();
 
     // calculate subtotal
     const tax = 0;
-    const subtotal = cart.reduce((acc, item) => acc * item.price * item.quantity, 0);
+    const subtotal = cart.reduce((acc, item) => acc + item.price * item.quantity, 0);
     const total = subtotal + tax;
+
+    console.log(tax);
+    console.log(subtotal);
+    console.log(total);
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         console.log({firstName,lastName, address, phone, paymentType, cart, subtotal, total});
+        toast.success('Order Completed!',{
+            position: toast.POSITION.TOP_RIGHT,
+            autoClose: 3000, // 3 seconds
+            hideProgressBar: true,
+        });
+
+        //clear cart
+        clearCart();
+
+        // route to /products
+        router.push('/products');
     };
 
     return (
@@ -37,12 +57,12 @@ const CheckoutPage: React.FC = () => {
                         <h2 className='text-lg font-bold mb-2 text-gray-800'>Cart Items</h2>
                     <ul>
                         {cart.map((product: CartItem) => (
-                            <li key={product.id}>
+                            <li className='text-gray-500' key={product.id}>
                                 {product.name} - Quantity: {product.quantity}
                             </li>
                         ))}
                     </ul>
-                    <div>
+                    <div className='mb-4'>
                         <p className='text-gray-700'>Subtotal: ${subtotal.toFixed(2)}</p>
                         <p className='text-gray-700'>Total: ${total.toFixed(2)}</p>
                     </div>

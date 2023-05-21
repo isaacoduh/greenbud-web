@@ -2,6 +2,8 @@ import React, {ReactNode} from "react";
 import Link from "next/link";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faShoppingCart } from '@fortawesome/free-solid-svg-icons';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 type LayoutProps = {
     children: ReactNode
@@ -38,6 +40,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
             {/* <footer className="sticky bottom-0 bg-gray-200 p-4"> */}
                 {/* Add your footer content here */}
             {/* </footer> */}
+            <ToastContainer />
         </div>
     );
 };
