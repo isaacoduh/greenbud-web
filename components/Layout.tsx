@@ -1,5 +1,7 @@
 import React, {ReactNode} from "react";
 import Link from "next/link";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faShoppingCart } from '@fortawesome/free-solid-svg-icons';
 
 type LayoutProps = {
     children: ReactNode
@@ -21,6 +23,12 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                         <li>
                             <Link href="/products">
                                 Products
+                            </Link>
+                        </li>
+                        <li>
+                            <Link href="/cart">
+                                <FontAwesomeIcon icon={faShoppingCart} className="mr-2" />
+                                
                             </Link>
                         </li>
                     </ul>
