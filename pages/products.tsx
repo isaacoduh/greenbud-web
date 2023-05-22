@@ -5,8 +5,11 @@ import axios from 'axios';
 import Link from "next/link";
 import ProductCard from "@/components/ProductCard";
 import Badge from "@/components/Badge";
+import { useProducts } from "@/hooks/useProducts";
+import { fetchProducts } from "./api/productApi";
 
 const ProductsPage = () => {
+    // const { data, isLoading, error } = useProducts();
     const [products, setProducts] = useState<Product[]>([]);
     const [cart, setCart] = useState<CartItem[]>([]);
     const { addToCart } = useContext(CartContext);
@@ -22,13 +25,23 @@ const ProductsPage = () => {
     //     }
     // };
 
+    const getProducts = async () => {
+        try {
+            const productList = await fetchProducts();
+            setProducts(productList);
+            return productList; // Return the fetched products
+        } catch (error) {
+            // Handle error
+            throw error;
+        }
+    };
+
 
     useEffect(() => {
         const fetchProducts = async () => {
             try {
-                const response = await axios.get('/api/products');
-                const products = response.data;
-                setProducts(products);
+                const productList = await getProducts();
+                setProducts(productList);
             } catch (error) {
                 
             }

@@ -21,13 +21,9 @@ const CheckoutPage: React.FC = () => {
     const subtotal = cart.reduce((acc, item) => acc + item.price * item.quantity, 0);
     const total = subtotal + tax;
 
-    console.log(tax);
-    console.log(subtotal);
-    console.log(total);
-
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        console.log({firstName,lastName, address, phone, paymentType, cart, subtotal, total});
+        console.log({firstName,lastName, address, phone, paymentType, cart, tax, subtotal, total});
         toast.success('Order Completed!',{
             position: toast.POSITION.TOP_RIGHT,
             autoClose: 3000, // 3 seconds
