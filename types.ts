@@ -14,3 +14,15 @@ export interface CartItem {
     price: number;
     quantity: number;
 }
+
+export interface Order{
+    firstName: string;
+    lastName: string,
+    address: string,
+    phone: string,
+    paymentType: string,
+    cart: object,
+    tax: number,
+    subtotal: number,
+    total: number
+}

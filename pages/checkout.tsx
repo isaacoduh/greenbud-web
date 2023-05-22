@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useRouter } from 'next/router';
+import { createOrder } from './api/orderApi';
 
 const CheckoutPage: React.FC = () => {
     const {cart, clearCart} = useContext(CartContext);
@@ -21,15 +22,15 @@ const CheckoutPage: React.FC = () => {
     const subtotal = cart.reduce((acc, item) => acc + item.price * item.quantity, 0);
     const total = subtotal + tax;
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        console.log({firstName,lastName, address, phone, paymentType, cart, tax, subtotal, total});
-        toast.success('Order Completed!',{
-            position: toast.POSITION.TOP_RIGHT,
-            autoClose: 3000, // 3 seconds
-            hideProgressBar: true,
+        await createOrder({firstName, lastName, address, phone, paymentType, cart, tax, subtotal, total}).then(response => {
+            toast.success('Order Completed!',{
+                position: toast.POSITION.TOP_RIGHT,
+                autoClose: 3000, // 3 seconds
+                hideProgressBar: true,
+            });
         });
-
         //clear cart
         clearCart();
 
