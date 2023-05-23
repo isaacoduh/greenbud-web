@@ -7,18 +7,6 @@ const CartPage: React.FC = () => {
     const router = useRouter();
     const {cart} = useContext(CartContext);
 
-    // return (
-    //     <div>
-    //         <h1 className='text-gray-900'>{cart.length}</h1>
-    //     </div>
-    // );
-
-    // const cartItems: CartItem[] = [
-    //     { id: 1, name: 'Product 1', price: 10, quantity: 1 },
-    //     { id: 2, name: 'Product 2', price: 15, quantity: 1 },
-    //     { id: 3, name: 'Product 3', price: 20, quantity: 1 },
-    // ];
-
     return (
         <div className='container mx-auto py-4'>
             <h1 className='text-2xl font-bold mb-4'>Cart</h1>

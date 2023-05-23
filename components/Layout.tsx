@@ -28,6 +28,11 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                             </Link>
                         </li>
                         <li>
+                            <Link href="/orders">
+                                Orders
+                            </Link>
+                        </li>
+                        <li>
                             <Link href="/cart">
                                 <FontAwesomeIcon icon={faShoppingCart} className="mr-2" />
                                 
