@@ -38,6 +38,12 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                                 
                             </Link>
                         </li>
+
+                        <li className="justify-end items-end">
+                            <Link href="/login">
+                                Login
+                            </Link>
+                        </li>
                     </ul>
                 </nav>
             </header>
