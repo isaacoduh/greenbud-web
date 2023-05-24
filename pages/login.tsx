@@ -1,20 +1,27 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useRouter } from "next/router";
-import { loginUser } from "./api/authApi";
+// import { loginUser } from "./api/authApi";
+import useAuth from "@/hooks/useAuth";
 
 const LoginPage = () => {
     const router = useRouter();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const { login, isAuthenticated } = useAuth();
+
+    useEffect(() => {
+        // Check if the user is already authenticated
+        if (isAuthenticated) {
+            router.push('/dashboard'); // Redirect to the dashboard page
+        }
+    }, [isAuthenticated, router]);
 
     const handleLogin = async (e: React.FormEvent) => {
         e.preventDefault();
 
         try {
             
-            const response = await loginUser({email: email, password: password});
-            localStorage.setItem('token', response.data.token);
-            router.push('/dashboard'); // Redirect to dashboard or any other page
+            login(email, password);
         } catch (error) {
             console.error(error);
         }

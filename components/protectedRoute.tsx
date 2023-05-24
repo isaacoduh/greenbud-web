@@ -1,31 +1,28 @@
-import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
+import React from "react";
+import { useRouter } from "next/router";
+import useAuth from "@/hooks/useAuth";
 
-const protectedRoute = (WrappedComponent: React.FC) => {
-    const Wrapper = () => {
-        const [token, setToken] = useState('');
+const protectedRoute = (WrappedComponent: React.ComponentType<any>) => {
+    const ProtectedRoute: React.FC = (props) => {
+        const { isAuthenticated } = useAuth();
         const router = useRouter();
-
-        useEffect(() => {
-            const storedToken = localStorage.getItem('token');
-            if(storedToken){
-                setToken(storedToken);
-            } else {
-                router.push('/login');
+        React.useEffect(() => {
+            if (!isAuthenticated) {
+                // Redirect to the login page if the user is not authenticated
+                router.push("/login");
             }
-            // if (!token) {
-            //     router.push('/login'); // Redirect to login page if no token is found
-            // }
-        }, []);
+        }, [isAuthenticated, router]);
 
-        if (!token) {
-            return null; // Render nothing while redirecting
+        if (!isAuthenticated) {
+            // You can show a loading spinner or any other UI while checking authentication
+            return <div>Loading...</div>;
         }
 
-        return <WrappedComponent />;
+        // Pass the props to the wrapped component
+        return <WrappedComponent {...props} />;
     };
 
-    return Wrapper;
+    return ProtectedRoute;
 };
 
 export default protectedRoute;
