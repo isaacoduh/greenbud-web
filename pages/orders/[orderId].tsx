@@ -2,6 +2,8 @@ import { useRouter } from 'next/router';
 import  { useEffect, useState } from 'react';
 import { OrderDetail } from '@/types';
 import { getOrderById } from '../api/orderApi';
+import useAuth from "@/hooks/useAuth";
+
 
 
 
@@ -9,6 +11,7 @@ const OrderDetailsPage = () => {
     const router = useRouter();
     const { orderId } = router.query;
     const [orderDetail, setOrderDetail] = useState<OrderDetail| null>(null);
+    const { isAuthenticated, token } = useAuth();
 
     // useEffect(() => {
     //     const fetchProducts = async () => {
@@ -23,9 +26,9 @@ const OrderDetailsPage = () => {
     //     fetchProducts();
     // }, []);
     useEffect(() => {
-        if (orderId) {
+        if (orderId && isAuthenticated) {
             // Call the getOrderById function from ordersApi.ts to fetch the order details
-            getOrderById(orderId)
+            getOrderById(orderId, token)
                 .then((data) => {
                     setOrderDetail(data);
                 })
@@ -33,7 +36,7 @@ const OrderDetailsPage = () => {
                     console.error('Error fetching order details:', error);
                 });
         }
-    }, [orderId]);
+    }, [orderId, isAuthenticated]);
 
     const handleGoBack = () => {
         router.back();

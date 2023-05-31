@@ -6,10 +6,12 @@ import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useRouter } from 'next/router';
 import { createOrder } from './api/orderApi';
+import useAuth from "@/hooks/useAuth";
+
 
 const CheckoutPage: React.FC = () => {
     const {cart, clearCart} = useContext(CartContext);
-    
+    const { isAuthenticated, token } = useAuth();
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
     const [address, setAddress] = useState('');
@@ -24,7 +26,7 @@ const CheckoutPage: React.FC = () => {
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        await createOrder({firstName, lastName, address, phone, paymentType, cart, tax, subtotal, total}).then(response => {
+        await createOrder({firstName, lastName, address, phone, paymentType, cart, tax, subtotal, total}, token).then(response => {
             toast.success('Order Completed!',{
                 position: toast.POSITION.TOP_RIGHT,
                 autoClose: 3000, // 3 seconds

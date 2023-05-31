@@ -5,24 +5,28 @@ import { fetchOrders } from "../api/orderApi";
 import { Order } from "@/types";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye } from '@fortawesome/free-solid-svg-icons';
+import useAuth from "@/hooks/useAuth";
+
 
 const OrdersPage = () => {
     const [orders, setOrders] = useState<Order[]>([]);
+    const { isAuthenticated, token } = useAuth();
     
     useEffect(() => {
-        const getOrders = async () => {
-            try {
-                const orderList = await fetchOrders();
-                
+    if (isAuthenticated) {
+      // Fetch orders for the logged-in user
+      myOrders();
+    }
+  }, [isAuthenticated]);
+    const myOrders = async () => {
+        try {
+                const orderList = await fetchOrders(token);
                 setOrders(orderList);
             } catch (error) {
                 // Handle error
                 console.error('Error fetching orders:', error);
             }
-        };
-
-        getOrders();
-    }, []);
+    }
 
     return (
         <div className="bg-white py-6 px-4 sm:px-6 lg:px-8">

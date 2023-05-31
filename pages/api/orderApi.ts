@@ -1,11 +1,16 @@
+
 import { Order, OrderDetail } from '@/types';
 import axios from 'axios';
 
 const API_BASE_URL = 'http://localhost:8000/api';
 
-export const createOrder = async (orderData: any): Promise<Order> => {
+export const createOrder = async (orderData: any, token: any): Promise<Order> => {
     try {
-        const response = await axios.post(`${API_BASE_URL}/orders`, orderData);
+        const response = await axios.post(`${API_BASE_URL}/orders`, orderData, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        });
         return response.data;
     } catch (error) {
         console.log(`Error creating order:`, error);
@@ -13,9 +18,13 @@ export const createOrder = async (orderData: any): Promise<Order> => {
     }
 }
 
-export const fetchOrders = async (): Promise<Order[]> => {
+export const fetchOrders = async (token: any): Promise<Order[]> => {
     try {
-        const response = await axios.get(`${API_BASE_URL}/orders`);
+        const response = await axios.get(`${API_BASE_URL}/orders`, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        });
         const responseData =  response.data?.data;
 
         const orders: Order[] = responseData.map((orderItem: any) => {
@@ -34,9 +43,13 @@ export const fetchOrders = async (): Promise<Order[]> => {
     }
 }
 
-export const getOrderById = async (orderId: any): Promise <OrderDetail> => {
+export const getOrderById = async (orderId: any, token: any): Promise <OrderDetail> => {
     try {
-        const response = await axios.get(`${API_BASE_URL}/orders/${orderId}`)
+        const response = await axios.get(`${API_BASE_URL}/orders/${orderId}`,{
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        })
         const responseData =  response.data?.data;
 
         const order: OrderDetail = {

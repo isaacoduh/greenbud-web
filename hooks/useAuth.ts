@@ -9,21 +9,20 @@ interface User {
     name: string
 }
 
-interface AuthData {
+interface TokenData {
     token: string;
-    user: User
 }
 
 const useAuth = () => {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     const [user, setUser] = useState<User | null>(null);
+    const [token, setToken] = useState<String>('');
     const router = useRouter();
 
 
 
     // check if user is already authenticated
     useEffect(() =>{
-        console.log('check-aut');
         checkAuthentication()
     }, [router]);
 
@@ -34,9 +33,11 @@ const useAuth = () => {
         if(token && storedUser){
             setIsAuthenticated(true);
             setUser(JSON.parse(storedUser));
+            setToken(token);
         } else {
             setIsAuthenticated(false);
             setUser(null);
+            setToken('');
         }
     };
 
@@ -48,6 +49,7 @@ const useAuth = () => {
             if(response.status === 200){
                 setIsAuthenticated(true);
                 setUser(response.data.data.user);
+                setToken(response.data.data.token);
 
                 // Store the token and user data in local storage
                 localStorage.setItem('token', response.data.data.token);
@@ -72,6 +74,7 @@ const useAuth = () => {
         // Reset the authenticated state and user data
         setIsAuthenticated(false);
         setUser(null);
+        setToken('');
 
         // Redirect to the login page
         router.push('/login');
@@ -81,7 +84,8 @@ const useAuth = () => {
         isAuthenticated,
         user,
         login,
-        logout
+        logout,
+        token
     }
 }
 
